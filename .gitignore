@@ -1,0 +1,14 @@
+/target
+**/*.rs.bk
+.DS_Store
+*.dmg
+/dist
+/.wolf
+# données de test : jamais de vraies captures dans le dépôt
+/donnees-test
+*.sqlite
+*.mp4
+/assets/modeles
+
+# Notes personnelles (plan, avancement, propositions) : gardées sur le Mac, hors du dépôt public.
+/notes-privees/

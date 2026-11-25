@@ -1,0 +1,47 @@
+[package]
+name = "bscreen-macos"
+description = "Couche système macOS de B-Screen : autorisations, barre des menus, ouverture à la connexion (puis capture, audio…)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+tracing.workspace = true
+serde.workspace = true
+aes-gcm = "0.10"
+hkdf = "0.12"
+sha2 = "0.10"
+serde_json.workspace = true
+bscreen-core.workspace = true
+bscreen-store.workspace = true
+bscreen-api.workspace = true
+tokio = { version = "1", default-features = false, features = ["sync"] }
+libc = "0.2"
+security-framework = "3"
+security-framework-sys = "2.17"
+core-foundation = "0.10"
+tokenizers = { version = "0.22", default-features = false, features = ["fancy-regex"] }
+url = "2"
+objc2.workspace = true
+block2.workspace = true
+objc2-foundation = { workspace = true, features = ["std", "block2", "NSArray", "NSData", "NSDate", "NSDictionary", "NSFileManager", "NSError", "NSLocale", "NSNotification", "NSObject", "NSOperation", "NSSet", "NSGeometry", "NSRange", "NSString", "NSTimer", "NSURL", "NSValue"] }
+objc2-app-kit = { workspace = true, features = ["std", "block2", "libc", "objc2-core-foundation", "objc2-core-graphics", "NSAlert", "NSApplication", "NSButton", "NSControl", "NSSecureTextField", "NSTextField", "NSColor", "NSEvent", "NSGraphics", "NSGraphicsContext", "NSImage", "NSImageRep", "NSPasteboard", "NSResponder", "NSRunningApplication", "NSScreen", "NSView", "NSWindow", "NSWorkspace"] }
+objc2-av-foundation = { workspace = true, features = ["std", "block2", "objc2-core-media", "objc2-core-video", "AVAsset", "AVAssetImageGenerator", "AVAssetReader", "AVAssetReaderOutput", "AVAssetTrack", "AVAssetWriter", "AVAssetWriterInput", "AVCaptureDevice", "AVMediaFormat", "AVVideoSettings", "objc2-core-graphics"] }
+objc2-service-management = { workspace = true, features = ["std", "objc2", "objc2-foundation", "SMAppService"] }
+tray-icon.workspace = true
+objc2-screen-capture-kit = { workspace = true, features = ["std", "block2", "dispatch2", "objc2-core-foundation", "objc2-core-graphics", "objc2-core-media", "SCShareableContent", "SCStream"] }
+objc2-core-media = { workspace = true, features = ["std", "objc2", "objc2-core-video", "CMBase", "CMFormatDescription", "CMSampleBuffer", "CMTime"] }
+objc2-core-video = { workspace = true, features = ["std", "objc2", "CVBase", "CVBuffer", "CVImageBuffer", "CVPixelBuffer", "CVReturn"] }
+objc2-core-foundation = { workspace = true, features = ["std", "objc2", "CFArray", "CFBase", "CFCGTypes", "CFDictionary"] }
+objc2-core-graphics = { workspace = true, features = ["std", "objc2", "CGDirectDisplay", "CGGeometry", "CGImage"] }
+dispatch2.workspace = true
+objc2-vision = { workspace = true, features = ["std", "objc2-core-foundation", "objc2-core-graphics", "objc2-core-video", "VNObservation", "VNRecognizeTextRequest", "VNRequest", "VNRequestHandler", "VNTypes", "VNUtils"] }
+objc2-avf-audio = { workspace = true, features = ["std", "AVAudioBuffer", "AVAudioFile", "AVAudioFormat", "AVAudioPlayer", "AVAudioRecorder", "AVAudioSettings", "AVAudioTypes"] }
+objc2-speech = { workspace = true, features = ["std", "block2", "SFErrors", "SFSpeechRecognitionRequest", "SFSpeechRecognitionResult", "SFSpeechRecognitionTask", "SFSpeechRecognitionTaskHint", "SFSpeechRecognizer", "SFTranscription", "SFTranscriptionSegment"] }
+objc2-core-audio-types.workspace = true
+objc2-sound-analysis = { workspace = true, features = ["std", "objc2-avf-audio", "SNAnalyzer", "SNClassificationResult", "SNClassifySoundRequest", "SNRequest", "SNResult", "SNTimeDurationConstraint", "SNTypes", "objc2-core-media"] }
+objc2-core-ml = { workspace = true, features = ["std", "MLDictionaryFeatureProvider", "MLFeatureProvider", "MLFeatureValue", "MLModel", "MLModelConfiguration", "MLMultiArray"] }
+objc2-local-authentication = { workspace = true, features = ["std", "block2", "LAContext"] }
+objc2-core-text = { workspace = true, features = ["std", "objc2-core-graphics", "CTFont", "CTFontDescriptor"] }

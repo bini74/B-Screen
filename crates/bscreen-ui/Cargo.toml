@@ -1,0 +1,20 @@
+[package]
+name = "bscreen-ui"
+description = "Interface de B-Screen : frise, Ask, réglages"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+bscreen-core.workspace = true
+gpui.workspace = true
+image.workspace = true
+futures.workspace = true
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+raw-window-handle = "0.6"
+tracing.workspace = true
+
+[dev-dependencies]
+# L'essai de la frise a besoin du pincement, fourni par la couche macOS.
+bscreen-macos.workspace = true

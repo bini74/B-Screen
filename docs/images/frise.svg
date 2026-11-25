@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b2030"/>
+      <stop offset="1" stop-color="#0b0d12"/>
+    </linearGradient>
+    <linearGradient id="bureau" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a3550"/>
+      <stop offset="1" stop-color="#151a28"/>
+    </linearGradient>
+    <linearGradient id="vignette" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a4660"/>
+      <stop offset="1" stop-color="#232a3c"/>
+    </linearGradient>
+    <filter id="ombre" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="700" rx="22" fill="url(#fond)"/>
+
+  <!-- L'écran d'un moment passé -->
+  <rect x="40" y="40" width="1120" height="430" rx="14" fill="url(#bureau)"/>
+  <g filter="url(#ombre)">
+    <rect x="120" y="78" width="760" height="360" rx="12" fill="#f4f5f8"/>
+    <rect x="120" y="78" width="760" height="40" rx="12" fill="#e4e6ec"/>
+    <rect x="120" y="104" width="760" height="14" fill="#e4e6ec"/>
+    <circle cx="142" cy="98" r="6" fill="#ff5f57"/><circle cx="162" cy="98" r="6" fill="#febc2e"/><circle cx="182" cy="98" r="6" fill="#28c840"/>
+    <rect x="300" y="88" width="400" height="20" rx="10" fill="#fff"/>
+    <text x="500" y="102" font-size="11" fill="#6b7080" text-anchor="middle">annonces-auto.fr/voiture-rouge-1968</text>
+    <rect x="150" y="140" width="300" height="190" rx="10" fill="#c8312f"/>
+    <path d="M190 290 q20 -60 70 -70 h80 q40 5 70 60 v20 h-220z" fill="#e8463f"/>
+    <circle cx="225" cy="300" r="20" fill="#1d1d22"/><circle cx="375" cy="300" r="20" fill="#1d1d22"/>
+    <rect x="470" y="144" width="230" height="16" rx="4" fill="#1d1f27"/>
+    <rect x="470" y="172" width="380" height="10" rx="5" fill="#b9bdc8"/>
+    <rect x="470" y="192" width="340" height="10" rx="5" fill="#b9bdc8"/>
+    <rect x="466" y="208" width="150" height="22" rx="5" fill="none" stroke="#0a84ff" stroke-width="2.5"/>
+    <text x="472" y="224" font-size="13" fill="#1d1f27">la voiture rouge</text>
+    <rect x="622" y="214" width="200" height="10" rx="5" fill="#b9bdc8"/>
+    <rect x="470" y="242" width="360" height="10" rx="5" fill="#b9bdc8"/>
+    <rect x="470" y="262" width="300" height="10" rx="5" fill="#b9bdc8"/>
+    <rect x="470" y="296" width="120" height="30" rx="8" fill="#0a84ff"/>
+    <text x="530" y="316" font-size="12" fill="#fff" text-anchor="middle" font-weight="600">Contacter</text>
+    <rect x="150" y="352" width="700" height="10" rx="5" fill="#d4d7df"/>
+    <rect x="150" y="372" width="620" height="10" rx="5" fill="#d4d7df"/>
+    <rect x="150" y="392" width="660" height="10" rx="5" fill="#d4d7df"/>
+  </g>
+  <g filter="url(#ombre)">
+    <rect x="900" y="150" width="230" height="220" rx="12" fill="#f4f5f8"/>
+    <rect x="900" y="150" width="230" height="34" rx="12" fill="#e4e6ec"/>
+    <text x="1015" y="172" font-size="12" fill="#3c4150" text-anchor="middle" font-weight="600">Messages</text>
+    <rect x="916" y="198" width="150" height="34" rx="14" fill="#e4e6ec"/>
+    <rect x="964" y="242" width="150" height="34" rx="14" fill="#0a84ff"/>
+    <rect x="916" y="286" width="120" height="34" rx="14" fill="#e4e6ec"/>
+  </g>
+
+  <!-- La recherche -->
+  <g filter="url(#ombre)">
+    <rect x="360" y="16" width="480" height="48" rx="24" fill="#1f2433" stroke="#3b4357"/>
+    <circle cx="390" cy="40" r="8" fill="none" stroke="#9aa1b2" stroke-width="2.4"/>
+    <line x1="396" y1="46" x2="402" y2="52" stroke="#9aa1b2" stroke-width="2.4" stroke-linecap="round"/>
+    <text x="414" y="46" font-size="18" fill="#eef0f5">voiture rouge</text>
+    <rect x="652" y="27" width="174" height="26" rx="13" fill="#0a84ff"/>
+    <text x="739" y="45" font-size="12.5" fill="#fff" text-anchor="middle" font-weight="600">3 endroits · ↩ suivant</text>
+  </g>
+
+  <!-- La bande de vignettes -->
+  <rect x="0" y="490" width="1200" height="210" fill="#0d1018" opacity="0.92"/>
+  <g font-size="11" fill="#8b91a0" text-anchor="middle">
+    <g>
+      <rect x="40" y="540" width="104" height="66" rx="7" fill="url(#vignette)"/><text x="92" y="626">17:52</text>
+      <rect x="160" y="540" width="104" height="66" rx="7" fill="url(#vignette)"/><text x="212" y="626">17:53</text>
+      <rect x="280" y="540" width="104" height="66" rx="7" fill="url(#vignette)"/><text x="332" y="626">17:54</text>
+      <rect x="400" y="540" width="104" height="66" rx="7" fill="url(#vignette)" stroke="#0a84ff" stroke-width="2" stroke-dasharray="4 3"/><text x="452" y="626">17:55</text>
+    </g>
+    <rect x="525" y="520" width="150" height="96" rx="9" fill="#c8312f" stroke="#0a84ff" stroke-width="3.5"/>
+    <rect x="535" y="530" width="60" height="38" rx="4" fill="#e8463f"/>
+    <rect x="602" y="532" width="62" height="6" rx="3" fill="#f4d6d5"/><rect x="602" y="544" width="52" height="6" rx="3" fill="#f4d6d5"/>
+    <text x="600" y="640" font-size="13" fill="#eef0f5" font-weight="600">Safari · 17:56</text>
+    <g>
+      <rect x="696" y="540" width="104" height="66" rx="7" fill="url(#vignette)"/><text x="748" y="626">17:57</text>
+      <rect x="816" y="540" width="104" height="66" rx="7" fill="url(#vignette)"/><text x="868" y="626">17:58</text>
+      <rect x="936" y="540" width="104" height="66" rx="7" fill="url(#vignette)" stroke="#0a84ff" stroke-width="2" stroke-dasharray="4 3"/><text x="988" y="626">18:02</text>
+      <rect x="1056" y="540" width="104" height="66" rx="7" fill="url(#vignette)"/><text x="1108" y="626">18:05</text>
+    </g>
+  </g>
+  <!-- Un moment privé, hachuré -->
+  <defs><pattern id="hachures" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#232a3c"/><line x1="0" y1="0" x2="0" y2="8" stroke="#4a5270" stroke-width="3"/></pattern></defs>
+  <rect x="816" y="540" width="104" height="66" rx="7" fill="url(#hachures)"/>
+  <text x="868" y="578" font-size="16" fill="#cfd4e0" text-anchor="middle">🔒</text>
+  <!-- La barre d'activité et les voix -->
+  <rect x="40" y="664" width="1120" height="8" rx="4" fill="#1f2433"/>
+  <rect x="300" y="664" width="140" height="8" rx="4" fill="#2fb36b"/>
+  <rect x="560" y="664" width="60" height="8" rx="4" fill="#2fb36b"/>
+  <rect x="900" y="664" width="200" height="8" rx="4" fill="#9b59f6"/>
+  <text x="40" y="690" font-size="11.5" fill="#8b91a0">⌥Espace pour ouvrir · ←/→ un moment · pincer pour remonter vite · Espace pour écouter · ? pour l'aide</text>
+  <text x="1160" y="690" font-size="11.5" fill="#8b91a0" text-anchor="end"><tspan fill="#2fb36b">■</tspan> voix  <tspan fill="#9b59f6">■</tspan> appel</text>
+</svg>

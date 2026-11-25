@@ -1,0 +1,11 @@
+[package]
+name = "bscreen-store"
+description = "Base de B-Screen : morceaux vidéo, images, (plus tard) textes, voix et vecteurs"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+bscreen-core.workspace = true
+rusqlite.workspace = true

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Logo 2 « Strates », version des petites tailles (16 et 32 px) : une seule strate derrière,
+       l'écran de devant plus grand, la double flèche de retour épaisse ; même grille que
+       logo-strates.svg (corps de 824 px centré), pour que macOS la découpe de la même façon. -->
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3D6BFF"/>
+      <stop offset="0.55" stop-color="#1A3CC4"/>
+      <stop offset="1" stop-color="#0B1A55"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(100 100) scale(8.24)">
+    <rect width="100" height="100" rx="22.5" fill="url(#fond)"/>
+    <rect x="13" y="17" width="56" height="42" rx="8" fill="#FFFFFF" fill-opacity="0.38"/>
+    <rect x="27" y="31" width="60" height="47" rx="9" fill="#FFFFFF"/>
+    <path d="M57 43.5L42.5 54.5L57 65.5ZM73 43.5L58.5 54.5L73 65.5Z" fill="#1A3CC4" stroke="#1A3CC4" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+</svg>

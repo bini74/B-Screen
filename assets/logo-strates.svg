@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Icône de l'app B-Screen, logo 2 « Strates », sur la grille des icônes macOS (corps de 824 px centré). -->
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3D6BFF"/>
+      <stop offset="0.55" stop-color="#1A3CC4"/>
+      <stop offset="1" stop-color="#0B1A55"/>
+    </linearGradient>
+    <linearGradient id="devant" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#D9E3FF"/>
+    </linearGradient>
+    <radialGradient id="reflet" cx="0.25" cy="0.15" r="0.7">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="ombre" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <g transform="translate(100 100) scale(8.24)">
+    <rect width="100" height="100" rx="22.5" fill="url(#fond)" filter="url(#ombre)"/>
+    <rect width="100" height="100" rx="22.5" fill="url(#reflet)"/>
+    <rect x="18" y="20" width="46" height="34" rx="6" fill="#FFFFFF" fill-opacity="0.16" stroke="#FFFFFF" stroke-opacity="0.38" stroke-width="1.2"/>
+    <rect x="26" y="29" width="50" height="37" rx="6.5" fill="#FFFFFF" fill-opacity="0.28" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="1.2"/>
+    <rect x="34" y="38" width="52" height="39" rx="7" fill="url(#devant)"/>
+    <path d="M60 50.5L49 57.5L60 64.5ZM72 50.5L61 57.5L72 64.5Z" fill="#1A3CC4" stroke="#1A3CC4" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+</svg>

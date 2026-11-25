@@ -1,0 +1,6 @@
+.venv/
+modele-hf/
+*.mlpackage
+modele-siglip2/
+*.mots
+__pycache__/

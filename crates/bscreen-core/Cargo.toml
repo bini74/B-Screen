@@ -1,0 +1,12 @@
+[package]
+name = "bscreen-core"
+description = "Cœur portable de B-Screen : format des moments, réglages, chemins"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+dirs.workspace = true
+serde.workspace = true
+serde_json.workspace = true

@@ -6,126 +6,198 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="B-Screen">
-<meta name="theme-color" content="#0b0d12">
+<meta name="theme-color" content="#03060b">
 <link rel="icon" href="/icone.svg">
 <link rel="apple-touch-icon" href="/icone.svg">
 <link rel="manifest" href="/manifest.webmanifest">
 <title>B-Screen</title>
 <style>
 :root {
-  --fond: #f2f3f7; --fond2: #e8eaf0; --verre: rgba(255,255,255,.72); --verre-fort: rgba(255,255,255,.9);
-  --trait: rgba(0,0,0,.08); --texte: #14161c; --doux: #5f6472; --tres-doux: #8b909c;
-  --accent: #0a84ff; --accent-doux: rgba(10,132,255,.12); --violet: #9b59f6; --vert: #2fb36b;
-  --ombre: 0 8px 30px rgba(20,22,28,.10);
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --fond: #0b0d12; --fond2: #141822; --verre: rgba(28,32,42,.72); --verre-fort: rgba(34,38,50,.92);
-    --trait: rgba(255,255,255,.09); --texte: #eef0f5; --doux: #a3a9b7; --tres-doux: #727887;
-    --accent: #3d9bff; --accent-doux: rgba(61,155,255,.16); --violet: #b98bff; --vert: #4cd38a;
-    --ombre: 0 10px 34px rgba(0,0,0,.45);
-    color-scheme: dark;
-  }
+  --fond: #03060b; --panneau: rgba(8, 20, 32, .74); --panneau-fort: rgba(10, 26, 40, .92);
+  --cyan: #4de1ff; --cyan-doux: rgba(77, 225, 255, .13); --trait: rgba(77, 225, 255, .22);
+  --violet: #b28cff; --vert: #4dffa8; --ambre: #ffb547; --rouge: #ff4d5e;
+  --texte: #e6f6ff; --doux: #8aa3b5; --tres-doux: #56707f;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; background: var(--fond); color: var(--texte);
-  font: 16px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; }
-body { min-height: 100vh; background:
-  radial-gradient(1200px 600px at 10% -10%, var(--accent-doux), transparent 60%),
-  radial-gradient(900px 500px at 110% 10%, rgba(155,89,246,.10), transparent 60%), var(--fond); }
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; }
+body { min-height: 100vh; overflow-x: hidden; }
+/* Le décor : lueurs, grille qui s'efface, lignes de balayage. */
+.decor { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 50% -8%, rgba(77, 225, 255, .20), transparent 65%),
+    radial-gradient(700px 500px at 110% 105%, rgba(178, 140, 255, .12), transparent 60%),
+    radial-gradient(600px 400px at -10% 80%, rgba(77, 255, 168, .06), transparent 60%), var(--fond); }
+.decor::before { content: ""; position: absolute; inset: 0;
+  background-image: linear-gradient(var(--cyan-doux) 1px, transparent 1px), linear-gradient(90deg, var(--cyan-doux) 1px, transparent 1px);
+  background-size: 44px 44px; opacity: .35;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%); mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%); }
+.decor::after { content: ""; position: absolute; inset: 0; opacity: .5;
+  background: repeating-linear-gradient(0deg, transparent 0 2px, rgba(0, 0, 0, .25) 2px 3px); }
 .page { max-width: 760px; margin: 0 auto;
-  padding: calc(env(safe-area-inset-top, 0px) + 14px) 16px calc(env(safe-area-inset-bottom, 0px) + 96px); }
-header { display: flex; align-items: center; gap: 10px; margin: 4px 2px 14px; }
-header img { width: 30px; height: 30px; border-radius: 8px; }
-header h1 { font-size: 20px; margin: 0; letter-spacing: -.2px; }
-header .etat { margin-left: auto; font-size: 13px; color: var(--tres-doux); }
-.verre { background: var(--verre); backdrop-filter: blur(22px) saturate(1.4); -webkit-backdrop-filter: blur(22px) saturate(1.4);
-  border: 1px solid var(--trait); box-shadow: var(--ombre); }
-.champ { display: flex; align-items: center; gap: 10px; border-radius: 999px; padding: 4px 6px 4px 18px; }
-.champ svg { flex: none; color: var(--tres-doux); }
+  padding: calc(env(safe-area-inset-top, 0px) + 16px) 16px calc(env(safe-area-inset-bottom, 0px) + 104px); }
+
+/* En-tête */
+header { display: flex; align-items: center; gap: 12px; margin: 2px 2px 22px; font-family: var(--mono); }
+.marque { display: flex; align-items: center; gap: 10px; letter-spacing: .32em; font-size: 14px; font-weight: 700; }
+.noyau { width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, var(--cyan) 45%, #0a5c8a);
+  box-shadow: 0 0 14px var(--cyan); animation: respire 3.6s ease-in-out infinite; }
+.statut { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .14em; color: var(--doux); text-transform: uppercase; }
+.led { width: 7px; height: 7px; border-radius: 50%; background: var(--vert); box-shadow: 0 0 8px var(--vert); animation: clignote 2.4s infinite; }
+.titre-vue { font-family: var(--mono); font-size: 11px; letter-spacing: .24em; color: var(--cyan); opacity: .8; margin: 0 4px 10px; }
+
+/* Champs */
+.champ { position: relative; display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 16px;
+  background: var(--panneau); border: 1px solid var(--trait); border-radius: 14px;
+  box-shadow: 0 0 0 1px rgba(77, 225, 255, .04), 0 10px 40px rgba(0, 0, 0, .5), inset 0 0 24px rgba(77, 225, 255, .05);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); transition: border-color .2s, box-shadow .2s; }
+.champ:focus-within { border-color: rgba(77, 225, 255, .6); box-shadow: 0 0 24px rgba(77, 225, 255, .25), inset 0 0 24px rgba(77, 225, 255, .08); }
+.invite { font-family: var(--mono); color: var(--cyan); font-size: 18px; text-shadow: 0 0 10px var(--cyan); }
 .champ input, .champ textarea { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--texte);
-  font: inherit; font-size: 18px; padding: 12px 0; }
-.champ textarea { resize: none; height: 48px; max-height: 160px; line-height: 1.35; }
-.bouton { flex: none; border: 0; border-radius: 999px; background: var(--accent); color: #fff; font: inherit; font-weight: 600;
-  padding: 10px 16px; cursor: pointer; }
-.bouton.second { background: var(--fond2); color: var(--texte); }
-.bouton:disabled { opacity: .45; }
-.info { color: var(--doux); font-size: 14px; margin: 12px 4px; }
-.cartes { display: grid; gap: 12px; margin-top: 14px; }
-.carte { display: grid; grid-template-columns: 132px 1fr; gap: 12px; border-radius: 18px; padding: 10px; cursor: pointer; }
-.carte .vignette { width: 132px; aspect-ratio: 16/10; border-radius: 11px; object-fit: cover; background: var(--fond2); }
-.carte .corps { min-width: 0; }
-.carte .haut { display: flex; gap: 6px; align-items: baseline; font-size: 13px; color: var(--doux); }
-.carte .haut b { color: var(--texte); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.carte .titre { font-weight: 600; font-size: 15px; margin: 2px 0 3px; overflow: hidden; text-overflow: ellipsis;
-  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
-.carte .extrait { font-size: 14px; color: var(--doux); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.puces { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-.puce { font-size: 11.5px; font-weight: 600; border-radius: 999px; padding: 2px 8px; background: var(--fond2); color: var(--doux); }
-.puce.sens { background: rgba(155,89,246,.14); color: var(--violet); }
-.puce.dit { background: rgba(47,179,107,.14); color: var(--vert); }
-@media (max-width: 420px) { .carte { grid-template-columns: 104px 1fr; } .carte .vignette { width: 104px; } }
-.onglets { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
-  display: flex; gap: 4px; padding: 5px; border-radius: 999px; z-index: 5; }
-.onglets button { border: 0; background: transparent; color: var(--doux); font: inherit; font-weight: 600; padding: 9px 20px; border-radius: 999px; cursor: pointer; }
-.onglets button[aria-selected="true"] { background: var(--accent); color: #fff; }
-.reponse { margin-top: 16px; border-radius: 20px; padding: 16px 18px; }
+  font: inherit; font-size: 17px; padding: 11px 0; caret-color: var(--cyan); }
+.champ input::placeholder, .champ textarea::placeholder { color: var(--tres-doux); font-family: var(--mono); font-size: 14px; letter-spacing: .04em; }
+.champ textarea { resize: none; height: 46px; max-height: 160px; line-height: 1.35; }
+.micro, .envoyer { flex: none; width: 40px; height: 40px; border-radius: 11px; border: 1px solid var(--trait); background: rgba(77, 225, 255, .06);
+  color: var(--cyan); display: flex; align-items: center; justify-content: center; cursor: pointer; font: inherit; }
+.envoyer { font-family: var(--mono); font-size: 18px; background: var(--cyan); color: #021018; border-color: var(--cyan); box-shadow: 0 0 18px rgba(77, 225, 255, .45); }
+.envoyer:disabled { opacity: .35; box-shadow: none; }
+.micro.ecoute { background: var(--rouge); border-color: var(--rouge); color: #fff; box-shadow: 0 0 20px var(--rouge); animation: pouls .9s ease-in-out infinite; }
+.aide { color: var(--tres-doux); font-size: 13px; margin: 10px 6px; }
+.aide code { font-family: var(--mono); color: var(--doux); }
+
+/* Cartes, façon viseur */
+.cartes { display: grid; gap: 12px; margin-top: 16px; }
+.carte { position: relative; display: grid; grid-template-columns: 132px 1fr; gap: 14px; padding: 12px; cursor: pointer;
+  background: var(--panneau); border: 1px solid rgba(77, 225, 255, .12); border-radius: 6px;
+  animation: apparait .35s ease-out both; transition: border-color .2s, transform .2s, box-shadow .2s; }
+.carte::before, .carte::after { content: ""; position: absolute; width: 14px; height: 14px; border: 2px solid var(--cyan); opacity: .75; }
+.carte::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.carte::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+.carte:active, .carte:hover { border-color: rgba(77, 225, 255, .45); box-shadow: 0 0 26px rgba(77, 225, 255, .14); transform: translateY(-1px); }
+.vignette-cadre { position: relative; width: 132px; aspect-ratio: 16/10; border-radius: 3px; overflow: hidden; background: #0b1622; }
+.vignette-cadre img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.85) contrast(1.05); }
+.vignette-cadre::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(3, 6, 11, .55)), repeating-linear-gradient(0deg, transparent 0 2px, rgba(0, 0, 0, .18) 2px 3px); }
+.corps { min-width: 0; }
+.haut { display: flex; gap: 8px; align-items: baseline; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--doux); text-transform: uppercase; }
+.haut b { color: var(--cyan); font-weight: 600; }
+.titre { font-weight: 600; font-size: 15px; margin: 3px 0 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.extrait { font-size: 13.5px; color: var(--doux); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.puces { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+.puce { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px;
+  border: 1px solid rgba(138, 163, 181, .35); color: var(--doux); }
+.puce.sens { border-color: rgba(178, 140, 255, .5); color: var(--violet); }
+.puce.dit { border-color: rgba(77, 255, 168, .45); color: var(--vert); }
+@media (max-width: 420px) { .carte { grid-template-columns: 104px 1fr; } .vignette-cadre { width: 104px; } }
+
+/* L'orbe d'Ask */
+.scene { display: flex; flex-direction: column; align-items: center; margin: 8px 0 22px; }
+.orbe { position: relative; width: 168px; height: 168px; border: 0; padding: 0; border-radius: 50%; cursor: pointer; background: none; }
+.coeur { position: absolute; inset: 24px; border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, #e9fbff 0, var(--cyan) 22%, #0b5f8e 55%, #031322 78%);
+  box-shadow: 0 0 50px rgba(77, 225, 255, .55), 0 0 120px rgba(77, 225, 255, .25), inset 0 0 30px rgba(255, 255, 255, .25);
+  animation: respire 4s ease-in-out infinite; transition: background .4s, box-shadow .4s; }
+.anneau { position: absolute; border-radius: 50%; border: 1px solid rgba(77, 225, 255, .35); border-top-color: transparent; border-left-color: transparent; }
+.a1 { inset: 10px; animation: tourne 14s linear infinite; }
+.a2 { inset: 0; border-style: dashed; opacity: .5; animation: tourne 26s linear infinite reverse; }
+.a3 { inset: -10px; opacity: .25; animation: tourne 40s linear infinite; }
+.orbe.ecoute .coeur { background: radial-gradient(circle at 36% 30%, #fff0f1 0, var(--rouge) 24%, #7a0f1d 58%, #1a0306 80%);
+  box-shadow: 0 0 60px rgba(255, 77, 94, .65), 0 0 140px rgba(255, 77, 94, .3), inset 0 0 30px rgba(255, 255, 255, .25); animation: pouls .7s ease-in-out infinite; }
+.orbe.ecoute .anneau { border-color: rgba(255, 77, 94, .5); border-top-color: transparent; }
+.orbe.pense .a1 { animation-duration: 1.2s; border-color: rgba(77, 225, 255, .8); border-top-color: transparent; }
+.orbe.pense .a2 { animation-duration: 2s; opacity: .9; }
+.orbe.pense .a3 { animation-duration: 3s; opacity: .6; }
+.orbe.pense .coeur { animation: respire 1.4s ease-in-out infinite; }
+.orbe.parle .coeur { background: radial-gradient(circle at 36% 30%, #fff7e8 0, var(--ambre) 24%, #8a5208 58%, #1a0f02 80%);
+  box-shadow: 0 0 60px rgba(255, 181, 71, .6), 0 0 140px rgba(255, 181, 71, .28), inset 0 0 30px rgba(255, 255, 255, .25); animation: onde .45s ease-in-out infinite alternate; }
+.orbe.parle .anneau { border-color: rgba(255, 181, 71, .5); border-top-color: transparent; }
+.legende { margin-top: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .26em; color: var(--cyan); text-transform: uppercase; opacity: .85; min-height: 1.5em; text-align: center; }
+.case { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--doux); margin: 10px 6px 0; }
+.case input { accent-color: var(--cyan); }
+
+/* Les réponses */
+.reponse { position: relative; margin-top: 16px; padding: 16px 18px; background: var(--panneau-fort); border: 1px solid var(--trait); border-radius: 6px; animation: apparait .35s ease-out both; }
+.reponse::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 2px; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); border-radius: 2px; }
+.question-posee { font-family: var(--mono); font-size: 12.5px; color: var(--cyan); letter-spacing: .04em; margin-bottom: 10px; }
+.question-posee::before { content: "› "; }
 .reponse p { margin: 0 0 10px; } .reponse ul { margin: 0 0 10px; padding-left: 20px; }
-.reponse .renvoi { color: var(--accent); font-weight: 600; cursor: pointer; white-space: nowrap; }
-.lectures { font-size: 13px; color: var(--tres-doux); margin: 10px 2px 0; }
-.lectures div::before { content: "↳ "; }
-.pied { display: flex; gap: 8px; margin-top: 12px; align-items: center; color: var(--tres-doux); font-size: 13px; }
-.pied .bouton { padding: 7px 14px; font-size: 14px; }
-.point { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-right: 6px;
-  animation: pulse 1.1s ease-in-out infinite; }
-@keyframes pulse { 50% { opacity: .25; } }
-.voile { position: fixed; inset: 0; background: #05060a; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); z-index: 10; display: flex; flex-direction: column;
-  padding: calc(env(safe-area-inset-top, 0px) + 12px) 12px calc(env(safe-area-inset-bottom, 0px) + 12px); }
-.voile .barre { display: flex; align-items: center; gap: 10px; color: #fff; margin-bottom: 10px; }
-.voile .barre div { min-width: 0; flex: 1; } .voile .barre b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.voile .barre span { font-size: 13px; color: #b9bfcc; }
-.voile .defile { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
-.voile img { width: 100%; height: auto; display: block; border-radius: 12px; background: #111; }
-.vide { text-align: center; color: var(--tres-doux); margin: 40px 10px; }
-.micro { flex: none; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--fond2); color: var(--doux);
-  display: flex; align-items: center; justify-content: center; cursor: pointer; }
-.micro.ecoute { background: #ff3b30; color: #fff; animation: pulse 1.1s ease-in-out infinite; }
-.case { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--doux); margin: 4px 4px 0; }
+.reponse .renvoi { font-family: var(--mono); font-size: 12.5px; color: var(--cyan); border: 1px solid var(--trait); border-radius: 3px; padding: 0 5px; cursor: pointer; white-space: nowrap; }
+.reponse .curseur { display: inline-block; width: 8px; height: 1.05em; vertical-align: -2px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: clignote 1s steps(1) infinite; }
+.lectures { font-family: var(--mono); font-size: 11.5px; color: var(--tres-doux); margin: 8px 0 0; }
+.lectures div::before { content: "> "; color: var(--cyan); }
+.pied { display: flex; gap: 8px; margin-top: 12px; align-items: center; font-family: var(--mono); color: var(--tres-doux); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.bouton { border: 1px solid var(--trait); background: rgba(77, 225, 255, .06); color: var(--cyan); font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+.vide { text-align: center; color: var(--tres-doux); margin: 44px 10px; font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; line-height: 1.8; }
+
+/* Onglets */
+.onglets { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); z-index: 5;
+  display: flex; gap: 4px; padding: 5px; border-radius: 10px; background: rgba(4, 10, 16, .97); border: 1px solid var(--trait);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 12px 40px rgba(0, 0, 0, .6); }
+.onglets button { border: 0; background: transparent; color: var(--doux); font-family: var(--mono); font-size: 12px; letter-spacing: .22em;
+  padding: 10px 20px; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+.onglets button[aria-selected="true"] { color: #021018; background: var(--cyan); box-shadow: 0 0 20px rgba(77, 225, 255, .5); }
+
+/* L'image en grand, dans un viseur */
+.voile { position: fixed; inset: 0; z-index: 10; background: #02050a; display: flex; flex-direction: column;
+  padding: calc(env(safe-area-inset-top, 0px) + 14px) 14px calc(env(safe-area-inset-bottom, 0px) + 14px); animation: apparait .25s ease-out both; }
+.voile .barre { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-family: var(--mono); }
+.voile .barre div { min-width: 0; flex: 1; }
+.voile .barre b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; letter-spacing: .06em; }
+.voile .barre span { font-size: 11px; color: var(--cyan); letter-spacing: .16em; }
+.cadre-image { position: relative; flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; padding: 10px; }
+.cadre-image::before, .cadre-image::after { content: ""; position: absolute; width: 22px; height: 22px; border: 2px solid var(--cyan); z-index: 1; pointer-events: none; }
+.cadre-image::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.cadre-image::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+.cadre-image img { width: 100%; height: auto; display: block; border-radius: 2px; background: #07111a; }
+
+@keyframes respire { 50% { transform: scale(1.035); filter: brightness(1.12); } }
+@keyframes pouls { 50% { transform: scale(1.08); } }
+@keyframes onde { from { transform: scale(.97); } to { transform: scale(1.06); } }
+@keyframes tourne { to { transform: rotate(360deg); } }
+@keyframes clignote { 50% { opacity: .25; } }
+@keyframes apparait { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 [hidden] { display: none !important; }
 </style>
 </head>
 <body>
+<div class="decor"></div>
 <div class="page">
   <header>
-    <img src="/icone.svg" alt="">
-    <h1>B-Screen</h1>
-    <span class="etat" id="etat"></span>
+    <div class="marque"><span class="noyau"></span>B-SCREEN</div>
+    <div class="statut"><span class="led"></span><span id="etat">Mémoire en ligne</span></div>
   </header>
 
   <section id="vue-chercher">
-    <form class="champ verre" id="form-chercher" autocomplete="off">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Chercher ce que tu as vu ou entendu" enterkeyhint="search" autocapitalize="off">
-      <button type="button" class="micro" id="micro-q" aria-label="Dicter la recherche" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+    <div class="titre-vue">// FRISE · MÉMOIRE DE L'ÉCRAN</div>
+    <form class="champ" id="form-chercher" autocomplete="off">
+      <span class="invite">&gt;</span>
+      <input id="q" type="search" placeholder="que cherches-tu ?" enterkeyhint="search" autocapitalize="off">
+      <button type="button" class="micro" id="micro-q" aria-label="Dicter la recherche" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
     </form>
-    <div class="info" id="info-chercher">Mots exacts, idées («&nbsp;la facture d'électricité&nbsp;»), ou ce qu'il y avait sur l'image («&nbsp;voiture rouge&nbsp;»). «&nbsp;@safari&nbsp;», «&nbsp;@hier&nbsp;» filtrent.</div>
+    <div class="aide" id="info-chercher">Des mots, une idée (« la facture d'électricité »), ce qu'il y avait sur l'image (« voiture rouge »). <code>@safari</code> <code>@hier</code> filtrent.</div>
     <div class="cartes" id="resultats"></div>
   </section>
 
   <section id="vue-demander" hidden>
-    <form class="champ verre" id="form-demander" autocomplete="off" style="border-radius: 24px; padding-left: 16px;">
-      <textarea id="question" placeholder="Demande ce que tu veux" enterkeyhint="send"></textarea>
-      <button type="button" class="micro" id="micro-question" aria-label="Poser la question à voix haute" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
-      <button class="bouton" id="envoyer" type="submit">Demander</button>
+    <div class="scene">
+      <button class="orbe" id="orbe" aria-label="Parler à B-Screen"><span class="anneau a3"></span><span class="anneau a2"></span><span class="anneau a1"></span><span class="coeur"></span></button>
+      <div class="legende" id="legende">Touche l'orbe pour parler</div>
+    </div>
+    <form class="champ" id="form-demander" autocomplete="off">
+      <textarea id="question" placeholder="ou écris ta question…" enterkeyhint="send"></textarea>
+      <button type="button" class="micro" id="micro-question" aria-label="Poser la question à voix haute" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+      <button class="envoyer" id="envoyer" type="submit" aria-label="Demander">→</button>
     </form>
-    <div class="info" id="info-demander">Par exemple «&nbsp;qu'est-ce qu'Camille m'a dit hier&nbsp;?&nbsp;» ou «&nbsp;sur quoi j'ai travaillé ce matin&nbsp;?&nbsp;». La réponse vient de ta mémoire, préparée sur le Mac (jamais les moments privés).</div>
-    <label class="case" id="case-lire" hidden><input type="checkbox" id="lire-toujours"> Lire toutes les réponses à voix haute (une question posée à la voix l'est toujours)</label>
+    <label class="case" id="case-lire" hidden><input type="checkbox" id="lire-toujours"> Lire toutes les réponses à voix haute</label>
     <div id="reponses"></div>
   </section>
 </div>
 
-<nav class="onglets verre" role="tablist">
+<nav class="onglets" role="tablist">
   <button role="tab" aria-selected="true" data-vue="chercher">Frise</button>
   <button role="tab" aria-selected="false" data-vue="demander">Demander</button>
 </nav>
@@ -133,9 +205,9 @@ header .etat { margin-left: auto; font-size: 13px; color: var(--tres-doux); }
 <div class="voile" id="voile" hidden>
   <div class="barre">
     <div><b id="voile-titre"></b><span id="voile-sous"></span></div>
-    <button class="bouton second" id="fermer">Fermer</button>
+    <button class="bouton" id="fermer">Fermer</button>
   </div>
-  <div class="defile"><img id="voile-image" alt=""></div>
+  <div class="cadre-image"><img id="voile-image" alt=""></div>
 </div>
 
 <script>
@@ -150,8 +222,8 @@ async function api(chemin) {
   return r.json();
 }
 function refuse() {
-  $("etat").textContent = "";
-  $("resultats").innerHTML = '<div class="vide">Cette page n’est pas encore autorisée.<br>Ouvre-la depuis le Mac : Réglages › Autres programmes › « Ouvrir la page ».</div>';
+  $("etat").textContent = "Accès refusé";
+  $("resultats").innerHTML = '<div class="vide">Accès non autorisé<br>Ouvre cette page depuis le Mac :<br>Réglages › Autres programmes › Ouvrir la page</div>';
 }
 
 // Le jeton donné une fois dans l'adresse devient un cookie, puis disparaît de l'adresse.
@@ -168,38 +240,39 @@ function montrer(vue) {
   document.querySelectorAll(".onglets button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.vue === vue)));
   $("vue-chercher").hidden = vue !== "chercher";
   $("vue-demander").hidden = vue !== "demander";
-  $("etat").hidden = vue !== "chercher";
-  if (vue === "demander") { api("/api/preparer").catch(() => {}); $("question").focus(); } else { $("q").focus(); }
+  $("etat").textContent = vue === "demander" ? "Mémoire en ligne" : etatRecherche;
+  if (vue === "demander") { api("/api/preparer").catch(() => {}); } else { $("q").focus(); }
 }
 
 // ---------- chercher
-let minuterie = null, numero = 0;
+let minuterie = null, numero = 0, etatRecherche = "Mémoire en ligne";
 $("q").addEventListener("input", () => { clearTimeout(minuterie); minuterie = setTimeout(chercher, 320); });
 $("form-chercher").addEventListener("submit", (e) => { e.preventDefault(); clearTimeout(minuterie); chercher(); $("q").blur(); });
 
 async function chercher() {
   const q = $("q").value.trim();
   const n = ++numero;
-  if (q.length < 2) { $("resultats").innerHTML = ""; $("etat").textContent = ""; return; }
-  $("etat").textContent = "…";
+  if (q.length < 2) { $("resultats").innerHTML = ""; $("etat").textContent = "Mémoire en ligne"; return; }
+  $("etat").textContent = "Recherche…";
   try {
     const r = await api("/api/chercher?q=" + encodeURIComponent(q));
     if (n !== numero) return;
     const endroits = r.endroits || [];
-    $("etat").textContent = endroits.length ? `${endroits.length} endroit${endroits.length > 1 ? "s" : ""} · ${r.ms} ms` : "";
-    $("resultats").innerHTML = endroits.length ? endroits.map(carte).join("") : '<div class="vide">Rien trouvé.</div>';
+    etatRecherche = endroits.length ? `${endroits.length} endroit${endroits.length > 1 ? "s" : ""} · ${r.ms} ms` : "Rien trouvé";
+    $("etat").textContent = etatRecherche;
+    $("resultats").innerHTML = endroits.length ? endroits.map(carte).join("") : '<div class="vide">Aucune trace dans la mémoire</div>';
   } catch (e) { if (e.message !== "jeton") $("etat").textContent = "Mac injoignable"; }
 }
 
-function carte(e) {
+function carte(e, rang) {
   const titre = e.dit ? "Dit à voix haute" : (e.fenetre || e.url || e.app || "Écran");
   const puces = [
     e.dit ? '<span class="puce dit">entendu</span>' : "",
     e.sens ? '<span class="puce sens">par le sens</span>' : "",
     e.nombre > 1 ? `<span class="puce">${e.nombre} moments</span>` : "",
   ].join("");
-  return `<div class="carte verre" data-id="${e.id}" data-titre="${echapper(titre)}" data-quand="${echapper(e.quand)}" onclick="ouvrir(this.dataset)">
-    <img class="vignette" loading="lazy" src="/api/vignette?id=${e.id}" alt="">
+  return `<div class="carte" style="animation-delay:${Math.min(rang, 12) * 35}ms" data-id="${e.id}" data-titre="${echapper(titre)}" data-quand="${echapper(e.quand)}" onclick="ouvrir(this.dataset)">
+    <div class="vignette-cadre"><img loading="lazy" src="/api/vignette?id=${e.id}" alt=""></div>
     <div class="corps">
       <div class="haut"><b>${echapper(e.app || "")}</b><span>${echapper(e.quand)}</span></div>
       <div class="titre">${echapper(titre)}</div>
@@ -216,6 +289,13 @@ function ouvrir(d) {
   $("voile").hidden = false;
 }
 $("fermer").addEventListener("click", () => { $("voile").hidden = true; $("voile-image").removeAttribute("src"); });
+
+// ---------- l'orbe : au repos, écoute, réfléchit, parle
+const LEGENDES = { ecoute: "J'écoute…", pense: "Je fouille ta mémoire…", parle: "Je te réponds" };
+function etatOrbe(etat) {
+  $("orbe").className = "orbe" + (etat ? " " + etat : "");
+  $("legende").textContent = LEGENDES[etat] || (Reconnaissance ? "Touche l'orbe pour parler" : "Écris ta question");
+}
 
 // ---------- la voix : dicter (reconnaissance de Safari) et écouter (synthèse de l'appareil)
 const Reconnaissance = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -236,6 +316,7 @@ function debloquerVoix() {
 function dicter(champ, bouton, quandFini) {
   if (ecoute) { ecoute.stop(); return; }
   debloquerVoix();
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
   const r = new Reconnaissance();
   r.lang = "fr-FR"; r.interimResults = true; r.continuous = false;
   let texte = "";
@@ -245,16 +326,24 @@ function dicter(champ, bouton, quandFini) {
     champ.dispatchEvent(new Event("input"));
   };
   r.onerror = (e) => { $("etat").textContent = e.error === "not-allowed" ? "Micro refusé" : "Dictée impossible"; };
-  r.onend = () => { bouton.classList.remove("ecoute"); ecoute = null; if (texte.trim()) quandFini(texte.trim()); };
+  r.onend = () => {
+    bouton.classList.remove("ecoute");
+    if (bouton.id === "orbe" || bouton.id === "micro-question") etatOrbe("");
+    ecoute = null;
+    if (texte.trim()) quandFini(texte.trim());
+  };
   ecoute = r;
   bouton.classList.add("ecoute");
-  try { r.start(); } catch { bouton.classList.remove("ecoute"); ecoute = null; }
+  if (bouton.id === "orbe" || bouton.id === "micro-question") etatOrbe("ecoute");
+  try { r.start(); } catch { bouton.classList.remove("ecoute"); ecoute = null; etatOrbe(""); }
 }
+function poserALaVoix() { prochaineVocale = true; $("form-demander").requestSubmit(); }
 $("micro-q").addEventListener("click", () => dicter($("q"), $("micro-q"), () => { clearTimeout(minuterie); chercher(); }));
-$("micro-question").addEventListener("click", () => dicter(question, $("micro-question"), () => {
-  prochaineVocale = true;
-  $("form-demander").requestSubmit();
-}));
+$("micro-question").addEventListener("click", () => dicter(question, $("micro-question"), poserALaVoix));
+$("orbe").addEventListener("click", () => {
+  if (Reconnaissance) dicter(question, $("orbe"), poserALaVoix);
+  else question.focus();
+});
 // La réponse lue à voix haute, sans les renvois ni la mise en forme.
 function parler(texte, pied) {
   if (!("speechSynthesis" in window) || !texte) return;
@@ -265,10 +354,11 @@ function parler(texte, pied) {
   const voix = speechSynthesis.getVoices().find((v) => v.lang && v.lang.startsWith("fr"));
   if (voix) u.voice = voix;
   const bouton = document.createElement("button");
-  bouton.className = "bouton second";
-  bouton.textContent = "Arrêter la lecture";
-  bouton.onclick = () => { speechSynthesis.cancel(); bouton.remove(); };
-  u.onend = () => bouton.remove();
+  bouton.className = "bouton";
+  bouton.textContent = "Silence";
+  bouton.onclick = () => { speechSynthesis.cancel(); bouton.remove(); etatOrbe(""); };
+  u.onstart = () => etatOrbe("parle");
+  u.onend = () => { bouton.remove(); etatOrbe(""); };
   pied.prepend(bouton);
   speechSynthesis.speak(u);
 }
@@ -276,7 +366,7 @@ function parler(texte, pied) {
 // ---------- demander
 let derniere = null, enCours = null;
 const question = $("question");
-question.addEventListener("input", () => { question.style.height = "48px"; question.style.height = Math.min(question.scrollHeight, 160) + "px"; });
+question.addEventListener("input", () => { question.style.height = "46px"; question.style.height = Math.min(question.scrollHeight, 160) + "px"; });
 question.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); $("form-demander").requestSubmit(); } });
 $("form-demander").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -284,34 +374,36 @@ $("form-demander").addEventListener("submit", async (e) => {
   const vocale = prochaineVocale;
   prochaineVocale = false;
   if (!q || enCours) return;
-  question.value = ""; question.style.height = "48px"; question.blur();
+  question.value = ""; question.style.height = "46px"; question.blur();
   const bloc = document.createElement("div");
-  bloc.className = "reponse verre";
-  bloc.innerHTML = `<div style="font-weight:600;margin-bottom:8px">${echapper(q)}</div><div class="texte"><span class="point"></span>Je cherche dans ta mémoire…</div><div class="lectures"></div><div class="pied"></div>`;
+  bloc.className = "reponse";
+  bloc.innerHTML = `<div class="question-posee">${echapper(q)}</div><div class="texte"><span class="curseur"></span></div><div class="lectures"></div><div class="pied"></div>`;
   $("reponses").prepend(bloc);
+  etatOrbe("pense");
   try {
     const r = await api("/api/demander?q=" + encodeURIComponent(q) + (derniere ? "&suite=" + derniere : ""));
     if (r.erreur) throw new Error(r.erreur);
     suivre(r.id, bloc, vocale);
-  } catch (err) { bloc.querySelector(".texte").textContent = "Impossible : " + err.message; }
+  } catch (err) { bloc.querySelector(".texte").textContent = "Impossible : " + err.message; etatOrbe(""); }
 });
 
 function suivre(id, bloc, vocale) {
   enCours = id;
   $("envoyer").disabled = true;
   const pied = bloc.querySelector(".pied");
-  pied.innerHTML = '<button class="bouton second">Arrêter</button>';
+  pied.innerHTML = '<button class="bouton">Interrompre</button>';
   pied.firstChild.onclick = () => api("/api/arreter?id=" + id).catch(() => {});
   const tour = async () => {
     let r;
     try { r = await api("/api/reponse?id=" + id); } catch { setTimeout(tour, 1500); return; }
-    if (r.texte) bloc.querySelector(".texte").innerHTML = rendre(r.texte, r.liens || []);
+    if (r.texte) bloc.querySelector(".texte").innerHTML = rendre(r.texte, r.liens || []) + (r.fini ? "" : '<span class="curseur"></span>');
     bloc.querySelector(".lectures").innerHTML = (r.lectures || []).slice(-4).map((l) => `<div>${echapper(l)}</div>`).join("");
     if (!r.fini) { setTimeout(tour, 400); return; }
     enCours = null; derniere = id; $("envoyer").disabled = false;
-    if (r.erreur) bloc.querySelector(".texte").innerHTML += `<p style="color:#ff5a52">${echapper(r.erreur)}</p>`;
+    etatOrbe("");
+    if (r.erreur) bloc.querySelector(".texte").innerHTML += `<p style="color:var(--rouge)">${echapper(r.erreur)}</p>`;
     bloc.querySelector(".lectures").innerHTML = "";
-    pied.innerHTML = `<span>${r.secondes ? r.secondes.toFixed(1).replace(".", ",") + " s" : ""}</span><span style="margin-left:auto">La question suivante en tiendra compte</span>`;
+    pied.innerHTML = `<span>${r.secondes ? r.secondes.toFixed(1).replace(".", ",") + " s" : ""}</span><span style="margin-left:auto">La suite en tiendra compte</span>`;
     if (!r.erreur && (vocale || $("lire-toujours").checked)) parler(r.texte, pied);
     bloc.querySelectorAll(".renvoi").forEach((s) => s.addEventListener("click", () => {
       if (s.dataset.image) ouvrir({ id: s.dataset.image, titre: s.textContent, quand: s.dataset.quand });
@@ -344,6 +436,7 @@ function rendre(texte, liens) {
   return html + (liste ? "</ul>" : "");
 }
 
+etatOrbe("");
 entrer().finally(() => { $("q").focus(); });
 </script>
 </body>

@@ -867,6 +867,12 @@ pub struct Frise {
     /// Position de la tête de lecture, en moments (partie décimale pendant le glissé).
     position: f32,
     zoom: f32,
+    /// Le défilement aimanté : numéro du dernier geste (une glissade en cours s'arrête quand un
+    /// nouveau geste arrive) et doigt levé (l'élan du trackpad suit).
+    aimant: u64,
+    doigt_leve: bool,
+    /// La vignette vers laquelle on glisse, si une glissade est en cours.
+    glissade: Option<f32>,
     vignettes: HashMap<i64, Arc<RenderImage>>,
     demandees: HashSet<i64>,
     /// Images illisibles (perdues dans un arrêt brutal) : on ne les redemande pas.
@@ -1157,6 +1163,9 @@ impl Frise {
             moments,
             focus,
             zoom: 1.0,
+            aimant: 0,
+            doigt_leve: false,
+            glissade: None,
             vignettes: HashMap::new(),
             demandees: HashSet::new(),
             echouees: HashSet::new(),
@@ -1243,10 +1252,74 @@ impl Frise {
         let d = e.delta.pixel_delta(px(16.0));
         let (dx, dy) = (f32::from(d.x), f32::from(d.y));
         let principal = if dx.abs() >= dy.abs() { dx } else { dy };
+        match e.touch_phase {
+            gpui::TouchPhase::Started => self.doigt_leve = false,
+            gpui::TouchPhase::Ended => self.doigt_leve = true,
+            gpui::TouchPhase::Moved => {}
+        }
+        // Aimanté (Julien, 28/11) : l'élan qui faiblit ne traîne pas entre deux vignettes, on va
+        // tout de suite à la plus proche.
+        if self.doigt_leve && principal.abs() < 3.0 {
+            self.aimanter(cx);
+            return;
+        }
+        self.aimant += 1;
+        self.glissade = None;
         let dernier = self.moments.len().saturating_sub(1) as f32;
         // Une vignette de défilement vaut `densite` moments.
         self.position = (self.position - principal / self.pas() * self.densite() as f32).clamp(0.0, dernier);
         cx.notify();
+        // Plus rien pendant 120 ms (molette, fin de l'élan) : on se pose sur la vignette la plus proche.
+        let numero = self.aimant;
+        cx.spawn(async move |frise, cx| {
+            cx.background_executor().timer(std::time::Duration::from_millis(120)).await;
+            let _ = frise.update(cx, |frise, cx| {
+                if frise.aimant == numero {
+                    frise.aimanter(cx);
+                }
+            });
+        })
+        .detach();
+    }
+
+    /// Glisse (140 ms, ralenti à la fin) jusqu'à la vignette la plus proche ; un nouveau geste
+    /// l'arrête.
+    fn aimanter(&mut self, cx: &mut Context<Self>) {
+        let densite = self.densite() as f32;
+        let dernier = self.moments.len().saturating_sub(1) as f32;
+        let cible = ((self.position / densite).round() * densite).clamp(0.0, dernier);
+        let depart = self.position;
+        if (cible - depart).abs() < 0.001 || self.glissade == Some(cible) {
+            return;
+        }
+        self.glissade = Some(cible);
+        self.aimant += 1;
+        let numero = self.aimant;
+        cx.spawn(async move |frise, cx| {
+            const ETAPES: u32 = 14;
+            for i in 1..=ETAPES {
+                cx.background_executor().timer(std::time::Duration::from_millis(10)).await;
+                let t = i as f32 / ETAPES as f32;
+                let lisse = 1.0 - (1.0 - t).powi(3);
+                let encore = frise
+                    .update(cx, |frise, cx| {
+                        if frise.aimant != numero {
+                            return false;
+                        }
+                        frise.position = depart + (cible - depart) * lisse;
+                        if i == ETAPES {
+                            frise.glissade = None;
+                        }
+                        cx.notify();
+                        true
+                    })
+                    .unwrap_or(false);
+                if !encore {
+                    return;
+                }
+            }
+        })
+        .detach();
     }
 
     /// ⌘F : ouvre le champ de recherche et lui donne le clavier.
